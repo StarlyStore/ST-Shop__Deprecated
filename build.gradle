@@ -15,11 +15,21 @@ repositories {
 
 dependencies {
     //JAVA DEPENDENCIES
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     compileOnly "org.jetbrains:annotations:23.0.0"
 
     //BUKKIT DEPENDENCIES
     compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
 
     // OTHER DEPENDENCIES
-    compileOnly "net.starly.core:ST-Core:1.5.5"
+    compileOnly "net.starly.core:ST-Core:1.5.6"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    destinationDir new File("C:\\Users\\강재욱\\Desktop\\Developements\\SERVER\\PLUGIN 1.19.2\\plugins")
 }

@@ -1,0 +1,5 @@
+lore:
+  edit:
+    - "&a구매 가격: {buy_price}"
+    - "&e판매 가격: {sell_price}"
+  open:
