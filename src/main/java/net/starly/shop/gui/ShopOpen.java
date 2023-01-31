@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,10 @@ public class ShopOpen {
             ItemStack item = inventory.getItem(i);
             if (item == null) continue;
             ItemMeta itemMeta = item.getItemMeta();
-            List<String> lore = config.getMessages("lore.open");
+            List<String> itemLore = shopConfig.getItemStack(shopName + ".items." + i).getItemMeta().getLore();
+            List<String> lore = itemLore == null ? new ArrayList<>() : itemLore;
+            lore.add("");
+            lore.addAll(config.getMessages("lore.open"));
             int finalI = i;
             lore = lore.stream()
                     .map(s -> {
