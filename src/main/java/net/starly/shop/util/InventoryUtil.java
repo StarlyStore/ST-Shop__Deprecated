@@ -2,8 +2,6 @@ package net.starly.shop.util;
 
 import net.starly.core.data.Config;
 import net.starly.shop.ShopMain;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
