@@ -23,7 +23,7 @@ public class ShopTab implements TabCompleter {
 
         if (args.length == 2) {
             if (player.isOp()) {
-                if (args[0].equals("생성")) return Arrays.asList("<메뉴 이름>");
+                if (args[0].equals("생성")) return Arrays.asList("<상점 이름>");
                 else if (args[0].equals("열기") || args[0].equals("제거") || args[0].equals("편집"))
                     try {
                         return Arrays.asList(new Config("shop/", ShopMain.getPlugin()).getFileNames().toArray(new String[0]));

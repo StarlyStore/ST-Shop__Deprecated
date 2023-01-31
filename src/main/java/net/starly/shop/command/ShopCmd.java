@@ -3,22 +3,18 @@ package net.starly.shop.command;
 import net.starly.core.data.Config;
 import net.starly.core.util.StringUtil;
 import net.starly.shop.ShopMain;
-import net.starly.shop.data.GuiType;
+import net.starly.shop.data.ShopType;
 import net.starly.shop.data.ShopData;
+import net.starly.shop.gui.ShopEdit;
+import net.starly.shop.gui.ShopOpen;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static net.starly.shop.ShopMain.*;
-import static net.starly.shop.data.ShopMap.guiTypeMap;
+import static net.starly.shop.data.ShopMap.shopTypeMap;
 import static net.starly.shop.data.ShopMap.shopMap;
 
 public class ShopCmd implements CommandExecutor {
@@ -29,7 +25,7 @@ public class ShopCmd implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (args.length == 0) {
+        if (args.length == 0 || args[0].equals("도움말")) {
             msgConfig.getMessages("messages.shop.help").forEach(player::sendMessage);
             return true;
         }
@@ -109,9 +105,7 @@ public class ShopCmd implements CommandExecutor {
                 }
 
                 String shopName = args[1];
-                player.openInventory(new Config("shop/" + shopName, ShopMain.getPlugin()).getInventory(shopName));
-                shopMap.put(player, shopName);
-                guiTypeMap.put(player, GuiType.OPEN);
+                ShopOpen.openInventory(player, shopName);
                 return true;
             }
             case "편집": {
@@ -131,24 +125,7 @@ public class ShopCmd implements CommandExecutor {
                 }
 
                 String shopName = args[1];
-                Config shopConfig = new Config("shop/" + shopName, ShopMain.getPlugin());
-                Inventory inventory = shopConfig.getInventory(shopName);
-                for (int i = 0; i < inventory.getSize(); i++) {
-                    ItemStack item = inventory.getItem(i);
-                    if (item == null) continue;
-                    ItemMeta itemMeta = item.getItemMeta();
-                    List<String> lore = config.getMessages("lore.edit");
-                    for (int s = 0; s < lore.size(); s++) {
-                        lore.set(s, lore.get(s).replace("{buy_price}", shopConfig.getInt("prices.buy." + i) == -1 ? "구매불가" : df.format(shopConfig.getInt("prices.buy." + i) ))
-                                .replace("{sell_price}", shopConfig.getInt("prices.sell." + i) == -1 ? "판매불가" : df.format(shopConfig.getInt("prices.sell." + i))));
-                    }
-                    itemMeta.setLore(lore);
-                    item.setItemMeta(itemMeta);
-                    inventory.setItem(i, item);
-                }
-                player.openInventory(inventory);
-                shopMap.put(player, shopName);
-                guiTypeMap.put(player, GuiType.EDIT);
+                ShopEdit.openInventory(player, shopName);
                 return true;
             }
             case "목록": {

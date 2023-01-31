@@ -1,7 +1,8 @@
-package net.starly.shop.data;
+package net.starly.shop.util;
 
 import net.starly.core.data.Config;
 import net.starly.shop.ShopMain;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -30,5 +31,27 @@ public class InventoryUtil {
         }
 
         config.saveConfig();
+    }
+
+    public static Boolean hasEnoughSpace(Inventory inventory, ItemStack toAdd) {
+        int freeSpace = 0;
+        for (ItemStack item : inventory) {
+            if (item == null) {
+                freeSpace += toAdd.getMaxStackSize();
+            } else if (item == toAdd) {
+                freeSpace += toAdd.getMaxStackSize() - item.getAmount();
+            }
+        }
+        freeSpace -= toAdd.getMaxStackSize() * 5;
+        return toAdd.getAmount() <= freeSpace;
+    }
+
+    public static Boolean hasItem(Inventory inventory, ItemStack itemStack) {
+        int amount = 0;
+        for (int i = 0; i < 36; i++) {
+            ItemStack item = inventory.getItem(i);
+            if (item != null && item.isSimilar(itemStack)) amount += item.getAmount();
+        }
+        return amount >= itemStack.getAmount();
     }
 }

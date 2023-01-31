@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'net.starly.boilerplate' // TODO: 수정
+group 'net.starly.boilerplate'
 version '1.0'
 
 repositories {
@@ -24,6 +24,7 @@ dependencies {
 
     // OTHER DEPENDENCIES
     compileOnly "net.starly.core:ST-Core:1.5.6"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
 }
 
 tasks.withType(JavaCompile).configureEach {
