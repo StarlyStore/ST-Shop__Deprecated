@@ -3,7 +3,6 @@ package net.starly.shop.command;
 import net.starly.core.data.Config;
 import net.starly.core.util.StringUtil;
 import net.starly.shop.ShopMain;
-import net.starly.shop.data.ShopType;
 import net.starly.shop.data.ShopData;
 import net.starly.shop.gui.ShopEdit;
 import net.starly.shop.gui.ShopOpen;
@@ -11,11 +10,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import static net.starly.shop.ShopMain.*;
-import static net.starly.shop.data.ShopMap.shopTypeMap;
-import static net.starly.shop.data.ShopMap.shopMap;
 
 public class ShopCmd implements CommandExecutor {
     @Override
@@ -75,13 +71,14 @@ public class ShopCmd implements CommandExecutor {
 
                 String shopName = args[1];
                 if (StringUtil.containsSpecialChar(shopName)) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.invalidName"));
+                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.invalidName"));
                     return true;
                 }
 
                 ShopData shopData = new ShopData(shopName);
                 if (!shopData.isExist()) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages."));
+                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.notExist"));
+                    return true;
                 }
 
                 shopData.delete();
@@ -152,8 +149,10 @@ public class ShopCmd implements CommandExecutor {
                     player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
+                player.sendMessage(msgConfig.getMessage("messages.shop.reload"));
                 config.reloadConfig();
                 msgConfig.reloadConfig();
+                player.sendMessage(msgConfig.getMessage("messages.shop.reloadComplete"));
                 return true;
             }
             default: {

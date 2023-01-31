@@ -19,25 +19,31 @@ public class ChatListener implements Listener {
     public void onChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
         ShopType shopType = shopTypeMap.get(player);
+
         if (shopType == ShopType.EDIT_BUY_PRICE || shopType == ShopType.EDIT_SELL_PRICE) {
             event.setCancelled(true);
             String msg = event.getMessage();
             int price;
+
             try {
                 price = Integer.parseInt(msg);
             } catch (NumberFormatException e) {
                 player.sendMessage(msgConfig.getMessage("errorMessages.shop.invalidPrice"));
                 return;
             }
+
             Config shopConfig = new Config("shop/" + editPriceMap.get(player).getA(), ShopMain.getPlugin());
+
             if (shopType == ShopType.EDIT_BUY_PRICE) {
                 shopConfig.setInt("prices.buy." + editPriceMap.get(player).getB(), price);
                 player.sendMessage(msgConfig.getMessage("messages.shop.editBuyPrice").replace("{price}", df.format(price)));
             }
+
             if (shopType == ShopType.EDIT_SELL_PRICE) {
                 shopConfig.setInt("prices.sell." + editPriceMap.get(player).getB(), price);
                 player.sendMessage(msgConfig.getMessage("messages.shop.editSellPrice").replace("{price}", df.format(price)));
             }
+
             ShopEdit.openInventory(player, editPriceMap.get(player).getA());
             editPriceMap.remove(player);
         }

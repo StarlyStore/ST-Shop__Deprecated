@@ -15,6 +15,4 @@ public class ShopMap {
     public static Map<Player, ShopType> shopTypeMap = new HashMap<>();
 
     public static Map<Player, Tuple<String, Integer>> editPriceMap = new HashMap<>();
-
-    public static Map<Player, Triple<String, ItemStack, Integer>> shopPurchaseMap = new HashMap<>();
 }

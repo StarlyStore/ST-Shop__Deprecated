@@ -37,6 +37,7 @@ public class InventoryClickListener implements Listener {
 
             String name = shopMap.get(player);
             Config shopConfig = new Config("shop/" + name, ShopMain.getPlugin());
+
             int slot = event.getSlot();
 
             if (event.getClick() == ClickType.SHIFT_LEFT) { // Item Remove
@@ -45,13 +46,17 @@ public class InventoryClickListener implements Listener {
                 return;
             } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
                 event.setCancelled(true);
+
                 Inventory inv = Bukkit.createInventory(null, 9, "가격 변경하기");
                 inv.setItem(4, new ItemBuilder(Material.EMERALD).setDisplayName("&a가격 변경하기")
                         .setLore(config.getStringList("lore.edit_price")).build());
                 player.openInventory(inv);
+
                 shopTypeMap.put(player, ShopType.EDIT_PRICE);
+
                 Tuple<String, Integer> tuple = new Tuple<>(name, slot);
                 editPriceMap.put(player, tuple);
+
                 return;
             } else {
                 if (event.getCurrentItem() != null) {
