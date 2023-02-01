@@ -51,16 +51,18 @@ public class ShopMain extends JavaPlugin {
         plugin = this;
         new Metrics(this, 17609);
 
-        msgConfig = new Config("msgConfig", this);
+        // CONFIG
+        msgConfig = new Config("message", this);
         msgConfig.loadDefaultConfig();
         msgConfig.setPrefix("messages.prefix");
-
         config = new Config("config", this);
         config.loadDefaultConfig();
 
+        // COMMAND
         Bukkit.getPluginCommand("상점").setExecutor(new ShopCmd());
         Bukkit.getPluginCommand("상점").setTabCompleter(new ShopTab());
 
+        // EVENT
         Bukkit.getPluginManager().registerEvents(new InventoryCloseListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryDragListener(), this);
@@ -70,6 +72,7 @@ public class ShopMain extends JavaPlugin {
     public static JavaPlugin getPlugin() {
         return plugin;
     }
+
     public static Economy getEconomy() {
         return economy;
     }
