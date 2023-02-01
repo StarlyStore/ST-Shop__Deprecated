@@ -49,7 +49,7 @@ public class ShopMain extends JavaPlugin {
         }
 
         plugin = this;
-        new Metrics(this, 12345);
+        new Metrics(this, 17609);
 
         msgConfig = new Config("msgConfig", this);
         msgConfig.loadDefaultConfig();
