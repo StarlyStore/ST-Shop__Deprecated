@@ -56,7 +56,7 @@ public class ShopCmd implements CommandExecutor {
                 return true;
             }
             case "제거": {
-                if (!player.hasPermission("starly.shop.delete")) {
+                if (!player.hasPermission("starly.shop.remove")) {
                     player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
