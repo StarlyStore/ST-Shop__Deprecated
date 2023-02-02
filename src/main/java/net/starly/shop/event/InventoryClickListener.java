@@ -41,6 +41,7 @@ public class InventoryClickListener implements Listener {
             int slot = event.getSlot();
 
             if (event.getClick() == ClickType.SHIFT_LEFT) { // Item Remove
+                if (event.getCurrentItem() == null) return;
                 event.getCurrentItem().setItemMeta(shopConfig.getItemStack(name + ".items." + slot).getItemMeta());
                 saveItem(name, event.getClickedInventory(), null, event.getSlot());
                 return;

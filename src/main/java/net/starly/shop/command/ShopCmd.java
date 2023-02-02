@@ -22,7 +22,8 @@ public class ShopCmd implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0 || args[0].equals("도움말")) {
-            msgConfig.getMessages("messages.shop.help").forEach(player::sendMessage);
+            if (player.isOp()) msgConfig.getMessages("messages.shop.help").forEach(player::sendMessage);
+            else msgConfig.getMessages("messages.shop.main").forEach(player::sendMessage);
             return true;
         }
         switch (args[0]) {
