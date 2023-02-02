@@ -21,7 +21,7 @@ public class ShopOpen {
     public static void openInventory(Player player, String shopName) {
         Config shopConfig = new Config("shop/" + shopName, ShopMain.getPlugin());
         if (!shopConfig.isFileExist()) {
-            player.sendMessage(msgConfig.getMessage("errorMessages.shop.notExist"));
+            player.sendMessage(message.getMessage("errorMessages.shop.notExist"));
             return;
         }
         Inventory inventory = shopConfig.getInventory(shopName);

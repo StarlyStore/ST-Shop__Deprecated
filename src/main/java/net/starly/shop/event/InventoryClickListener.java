@@ -98,13 +98,13 @@ public class InventoryClickListener implements Listener {
                 player.closeInventory();
                 shopTypeMap.put(player, ShopType.EDIT_BUY_PRICE);
 
-                player.sendMessage(msgConfig.getMessage("messages.shop.startEditBuyPrice"));
+                player.sendMessage(message.getMessage("messages.shop.startEditBuyPrice"));
 
             } else if (event.getClick().isRightClick()) {
                 player.closeInventory();
                 shopTypeMap.put(player, ShopType.EDIT_SELL_PRICE);
 
-                player.sendMessage(msgConfig.getMessage("messages.shop.startEditSellPrice"));
+                player.sendMessage(message.getMessage("messages.shop.startEditSellPrice"));
             }
         }
     }
@@ -141,21 +141,21 @@ public class InventoryClickListener implements Listener {
                 }
 
                 if (price == -1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.cannotBuy"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.cannotBuy"));
                 } else if (balance >= price) {
                     if (!hasEnoughSpace(player.getInventory(), clickedItem)) {
-                        player.sendMessage(msgConfig.getMessage("errorMessages.shop.notEnoughSpace"));
+                        player.sendMessage(message.getMessage("errorMessages.shop.notEnoughSpace"));
                         return;
                     }
 
                     economy.withdrawPlayer(player, price);
                     player.getInventory().addItem(new ItemBuilder(clickedItem.getType(), amount).setItemMeta(clickedItem.getItemMeta()).build());
-                    player.sendMessage(msgConfig.getMessage("messages.shop.buy")
+                    player.sendMessage(message.getMessage("messages.shop.buy")
                             .replace("{item}", clickedItem.getItemMeta().getDisplayName().isEmpty() ? clickedItem.getType().toString() : clickedItem.getItemMeta().getDisplayName())
                             .replace("{price}", df.format(price))
                             .replace("{amount}", df.format(amount)));
                 } else {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.notEnoughMoney"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.notEnoughMoney"));
                 }
             } else if (click == ClickType.RIGHT || click == ClickType.SHIFT_RIGHT) { // Sell
                 int price = shopConfig.getInt("prices.sell." + clickedSlot);
@@ -165,17 +165,17 @@ public class InventoryClickListener implements Listener {
                     price *= 64;
                 }
                 if (price == -1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.cannotSell"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.cannotSell"));
                     return;
                 } else if (!hasItem(player.getInventory(), new ItemBuilder(clickedItem.getType(), amount).setItemMeta(clickedItem.getItemMeta()).build())) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.notEnoughItem"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.notEnoughItem"));
                     return;
                 }
 
                 economy.depositPlayer(player, price);
                 player.getInventory().removeItem(new ItemBuilder(clickedItem.getType(), amount).setItemMeta(clickedItem.getItemMeta()).build());
 
-                player.sendMessage(msgConfig.getMessage("messages.shop.sell")
+                player.sendMessage(message.getMessage("messages.shop.sell")
                         .replace("{item}", clickedItem.getItemMeta().getDisplayName().isEmpty() ? clickedItem.getType().toString() : clickedItem.getItemMeta().getDisplayName())
                         .replace("{price}", df.format(price))
                         .replace("{amount}", df.format(amount)));

@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import static net.starly.shop.ShopMain.df;
-import static net.starly.shop.ShopMain.msgConfig;
+import static net.starly.shop.ShopMain.message;
 import static net.starly.shop.data.ShopMap.*;
 
 @SuppressWarnings("deprecation")
@@ -28,7 +28,7 @@ public class ChatListener implements Listener {
             try {
                 price = Integer.parseInt(msg);
             } catch (NumberFormatException e) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.shop.invalidPrice"));
+                player.sendMessage(message.getMessage("errorMessages.shop.invalidPrice"));
                 return;
             }
 
@@ -36,12 +36,12 @@ public class ChatListener implements Listener {
 
             if (shopType == ShopType.EDIT_BUY_PRICE) {
                 shopConfig.setInt("prices.buy." + editPriceMap.get(player).getB(), price);
-                player.sendMessage(msgConfig.getMessage("messages.shop.editBuyPrice").replace("{price}", df.format(price)));
+                player.sendMessage(message.getMessage("messages.shop.editBuyPrice").replace("{price}", df.format(price)));
             }
 
             if (shopType == ShopType.EDIT_SELL_PRICE) {
                 shopConfig.setInt("prices.sell." + editPriceMap.get(player).getB(), price);
-                player.sendMessage(msgConfig.getMessage("messages.shop.editSellPrice").replace("{price}", df.format(price)));
+                player.sendMessage(message.getMessage("messages.shop.editSellPrice").replace("{price}", df.format(price)));
             }
 
             ShopEdit.openInventory(player, editPriceMap.get(player).getA());

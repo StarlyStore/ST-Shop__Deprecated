@@ -18,20 +18,8 @@ import java.text.DecimalFormat;
 public class ShopMain extends JavaPlugin {
     private static Economy economy = null;
     private static JavaPlugin plugin;
-    public static Config msgConfig, config;
+    public static Config message, config;
     public static DecimalFormat df = new DecimalFormat("###,###");
-
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        economy = rsp.getProvider();
-        return economy != null;
-    }
 
     @Override
     public void onEnable() {
@@ -52,9 +40,9 @@ public class ShopMain extends JavaPlugin {
         new Metrics(this, 17609);
 
         // CONFIG
-        msgConfig = new Config("message", this);
-        msgConfig.loadDefaultConfig();
-        msgConfig.setPrefix("messages.prefix");
+        message = new Config("message", this);
+        message.loadDefaultConfig();
+        message.setPrefix("messages.prefix");
         config = new Config("config", this);
         config.loadDefaultConfig();
 
@@ -67,6 +55,20 @@ public class ShopMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryDragListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+    }
+
+
+    // SETUP VAULT ECONOMY
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        economy = rsp.getProvider();
+        return economy != null;
     }
 
     public static JavaPlugin getPlugin() {

@@ -22,83 +22,84 @@ public class ShopCmd implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0 || args[0].equals("도움말")) {
-            if (player.isOp()) msgConfig.getMessages("messages.shop.help").forEach(player::sendMessage);
-            else msgConfig.getMessages("messages.shop.main").forEach(player::sendMessage);
+            if (player.isOp()) message.getMessages("messages.shop.help").forEach(player::sendMessage);
+            else message.getMessages("messages.shop.main").forEach(player::sendMessage);
             return true;
         }
+
         switch (args[0]) {
             case "생성": {
                 if (!player.hasPermission("starly.shop.create")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
 
                 if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.noName"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.noName"));
                     return true;
                 }
 
                 if (args.length != 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
 
                 String shopName = args[1];
                 if (StringUtil.containsSpecialChar(shopName)) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.invalidName"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.invalidName"));
                     return true;
                 }
 
                 ShopData shopData = new ShopData(shopName);
                 shopData.create();
-                player.sendMessage(msgConfig.getMessage("messages.shop.create").replace("{name}", shopName));
+                player.sendMessage(message.getMessage("messages.shop.create").replace("{name}", shopName));
                 return true;
             }
             case "제거": {
                 if (!player.hasPermission("starly.shop.delete")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
 
                 if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.noName"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.noName"));
                     return true;
                 }
 
                 if (args.length != 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
 
                 String shopName = args[1];
                 if (StringUtil.containsSpecialChar(shopName)) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.invalidName"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.invalidName"));
                     return true;
                 }
 
                 ShopData shopData = new ShopData(shopName);
                 if (!shopData.isExist()) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.notExist"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.notExist"));
                     return true;
                 }
 
                 shopData.delete();
-                player.sendMessage(msgConfig.getMessage("messages.shop.delete").replace("{name}", shopName));
+                player.sendMessage(message.getMessage("messages.shop.delete").replace("{name}", shopName));
                 return true;
             }
             case "열기": {
                 if (!player.hasPermission("starly.shop.open")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
 
                 if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.noName"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.noName"));
                     return true;
                 }
 
                 if (args.length != 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
 
@@ -108,17 +109,17 @@ public class ShopCmd implements CommandExecutor {
             }
             case "편집": {
                 if (!player.hasPermission("starly.shop.edit")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
 
                 if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shop.noName"));
+                    player.sendMessage(message.getMessage("errorMessages.shop.noName"));
                     return true;
                 }
 
                 if (args.length != 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
 
@@ -128,12 +129,12 @@ public class ShopCmd implements CommandExecutor {
             }
             case "목록": {
                 if (!player.hasPermission("starly.shop.list")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
 
                 if (args.length != 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
 
@@ -142,22 +143,22 @@ public class ShopCmd implements CommandExecutor {
             }
             case "리로드": {
                 if (!player.hasPermission("starly.shop.reload")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    player.sendMessage(message.getMessage("errorMessages.noPermission"));
                     return true;
                 }
 
                 if (args.length != 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                     return true;
                 }
-                player.sendMessage(msgConfig.getMessage("messages.shop.reload"));
+                player.sendMessage(message.getMessage("messages.shop.reload"));
                 config.reloadConfig();
-                msgConfig.reloadConfig();
-                player.sendMessage(msgConfig.getMessage("messages.shop.reloadComplete"));
+                message.reloadConfig();
+                player.sendMessage(message.getMessage("messages.shop.reloadComplete"));
                 return true;
             }
             default: {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                player.sendMessage(message.getMessage("errorMessages.wrongCommand"));
                 return true;
             }
         }
