@@ -131,39 +131,29 @@ public class InventoryClickListener implements Listener {
             Economy economy = getEconomy();
             double balance = economy.getBalance(player);
             int amount = 1;
-
+            if (click.isShiftClick()) amount = 64;
             if (click == ClickType.LEFT || click == ClickType.SHIFT_LEFT) { // Buy
                 int price = shopConfig.getInt("prices.buy." + clickedSlot);
 
-                if (click == ClickType.SHIFT_LEFT) {
-                    amount = 64;
-                    price *= 64;
-                }
-
                 if (price == -1) {
                     player.sendMessage(message.getMessage("errorMessages.shop.cannotBuy"));
-                } else if (balance >= price) {
+                } else if (balance >= price * amount) {
                     if (!hasEnoughSpace(player.getInventory(), clickedItem)) {
                         player.sendMessage(message.getMessage("errorMessages.shop.notEnoughSpace"));
                         return;
                     }
 
-                    economy.withdrawPlayer(player, price);
+                    economy.withdrawPlayer(player, price * amount);
                     player.getInventory().addItem(new ItemBuilder(clickedItem.getType(), amount).setItemMeta(clickedItem.getItemMeta()).build());
                     player.sendMessage(message.getMessage("messages.shop.buy")
                             .replace("{item}", clickedItem.getItemMeta().getDisplayName().isEmpty() ? clickedItem.getType().toString() : clickedItem.getItemMeta().getDisplayName())
-                            .replace("{price}", df.format(price))
+                            .replace("{price}", df.format((long) price * amount))
                             .replace("{amount}", df.format(amount)));
                 } else {
                     player.sendMessage(message.getMessage("errorMessages.shop.notEnoughMoney"));
                 }
             } else if (click == ClickType.RIGHT || click == ClickType.SHIFT_RIGHT) { // Sell
                 int price = shopConfig.getInt("prices.sell." + clickedSlot);
-
-                if (click == ClickType.SHIFT_RIGHT) {
-                    amount = 64;
-                    price *= 64;
-                }
                 if (price == -1) {
                     player.sendMessage(message.getMessage("errorMessages.shop.cannotSell"));
                     return;
@@ -172,12 +162,12 @@ public class InventoryClickListener implements Listener {
                     return;
                 }
 
-                economy.depositPlayer(player, price);
+                economy.depositPlayer(player, price * amount);
                 player.getInventory().removeItem(new ItemBuilder(clickedItem.getType(), amount).setItemMeta(clickedItem.getItemMeta()).build());
 
                 player.sendMessage(message.getMessage("messages.shop.sell")
                         .replace("{item}", clickedItem.getItemMeta().getDisplayName().isEmpty() ? clickedItem.getType().toString() : clickedItem.getItemMeta().getDisplayName())
-                        .replace("{price}", df.format(price))
+                        .replace("{price}", df.format((long) price * amount))
                         .replace("{amount}", df.format(amount)));
             }
         }
