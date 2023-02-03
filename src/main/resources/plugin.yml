@@ -9,7 +9,7 @@ softdepend:
   - ST-Core
   - Vault
 
-version: 1.0_Alpha
+version: 1.0.1_Alpha
 api-version: 1.13
 
 commands:
