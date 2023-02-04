@@ -3,10 +3,12 @@ package net.starly.shop.gui;
 import net.starly.core.data.Config;
 import net.starly.shop.ShopMain;
 import net.starly.shop.data.ShopType;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,23 +25,23 @@ public class ShopEdit {
             return;
         }
         Inventory inventory = shopConfig.getInventory(shopName);
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack item = inventory.getItem(i);
-            if (item == null) continue;
+        ConfigurationSection section = shopConfig.getConfigurationSection(shopName + ".items");
+        for (String key : section.getKeys(false)) {
+            ItemStack item = shopConfig.getItemStack(shopName + ".items." + key);
+            PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
             ItemMeta itemMeta = item.getItemMeta();
             List<String> lore = config.getMessages("lore.edit");
-            int finalI = i;
             lore = lore.stream()
                     .map(s -> {
                         if (s.contains("{buy_price}") || s.contains("{sell_price}")) {
-                            return s.replace("{buy_price}", shopConfig.getInt("prices.buy." + finalI) == -1 ? "구매불가" : df.format(shopConfig.getInt("prices.buy." + finalI)))
-                                    .replace("{sell_price}", shopConfig.getInt("prices.sell." + finalI) == -1 ? "판매불가" : df.format(shopConfig.getInt("prices.sell." + finalI)));
+                            return s.replace("{buy_price}", shopConfig.getInt("prices.buy." + key) == -1 ? "구매불가" : df.format(shopConfig.getInt("prices.buy." + key)))
+                                    .replace("{sell_price}", shopConfig.getInt("prices.sell." + key) == -1 ? "판매불가" : df.format(shopConfig.getInt("prices.sell." + key)));
                         }
                         return s;
                     }).collect(Collectors.toList());
             itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
-            inventory.setItem(i, item);
+            inventory.setItem(Integer.parseInt(key), item);
         }
         player.openInventory(inventory);
         shopMap.put(player, shopName);

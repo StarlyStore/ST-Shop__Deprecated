@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,10 +43,11 @@ public class InventoryClickListener implements Listener {
 
             if (event.getClick() == ClickType.SHIFT_LEFT) { // Item Remove
                 if (event.getCurrentItem() == null) return;
-                event.getCurrentItem().setItemMeta(shopConfig.getItemStack(name + ".items." + slot).getItemMeta());
+                event.setCurrentItem(shopConfig.getItemStack(name + ".items." + slot));
                 saveItem(name, event.getClickedInventory(), null, event.getSlot());
                 return;
             } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
+                if (event.getCurrentItem() == null) return;
                 event.setCancelled(true);
 
                 Inventory inv = Bukkit.createInventory(null, 9, "가격 변경하기");
@@ -77,7 +79,11 @@ public class InventoryClickListener implements Listener {
                             }
                             return s;
                         }).collect(Collectors.toList());
-                        ItemStack item = new ItemBuilder(event.getCurrentItem().getType(), event.getCurrentItem().getAmount()).setDisplayName(event.getCurrentItem().getItemMeta().getDisplayName()).setLore(lore).build();
+                        ItemStack item = shopConfig.getItemStack(name + ".items." + slot);
+                        ItemMeta itemMeta = item.getItemMeta();
+                        System.out.println(itemMeta.toString());
+                        itemMeta.setLore(lore);
+                        item.setItemMeta(itemMeta);
                         event.setCurrentItem(item);
                     }
                 } catch (Exception ignored) {
@@ -94,13 +100,13 @@ public class InventoryClickListener implements Listener {
         if (event.getView().getTitle().equals("가격 변경하기") && shopType == ShopType.EDIT_PRICE) {
             event.setCancelled(true);
 
-            if (event.getClick().isLeftClick()) {
+            if (event.getClick() == ClickType.LEFT) {
                 player.closeInventory();
                 shopTypeMap.put(player, ShopType.EDIT_BUY_PRICE);
 
                 player.sendMessage(message.getMessage("messages.shop.startEditBuyPrice"));
 
-            } else if (event.getClick().isRightClick()) {
+            } else if (event.getClick() == ClickType.RIGHT) {
                 player.closeInventory();
                 shopTypeMap.put(player, ShopType.EDIT_SELL_PRICE);
 
@@ -144,7 +150,9 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.withdrawPlayer(player, price * amount);
-                    player.getInventory().addItem(new ItemBuilder(clickedItem.getType(), amount).setItemMeta(clickedItem.getItemMeta()).build());
+                    ItemStack item = shopConfig.getItemStack(name + ".items." + clickedSlot);
+                    item.setAmount(amount);
+                    player.getInventory().addItem(item);
                     player.sendMessage(message.getMessage("messages.shop.buy")
                             .replace("{item}", clickedItem.getItemMeta().getDisplayName().isEmpty() ? clickedItem.getType().toString() : clickedItem.getItemMeta().getDisplayName())
                             .replace("{price}", df.format((long) price * amount))

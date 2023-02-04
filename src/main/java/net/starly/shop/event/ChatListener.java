@@ -1,6 +1,7 @@
 package net.starly.shop.event;
 
 import net.starly.core.data.Config;
+import net.starly.core.data.util.Tuple;
 import net.starly.shop.ShopMain;
 import net.starly.shop.data.ShopType;
 import net.starly.shop.gui.ShopEdit;
@@ -31,20 +32,19 @@ public class ChatListener implements Listener {
                 player.sendMessage(message.getMessage("errorMessages.shop.invalidPrice"));
                 return;
             }
-
-            Config shopConfig = new Config("shop/" + editPriceMap.get(player).getA(), ShopMain.getPlugin());
-
+            Tuple<String, Integer> tuple = editPriceMap.get(player);
+            Config shopConfig = new Config("shop/" + tuple.getA(), ShopMain.getPlugin());
             if (shopType == ShopType.EDIT_BUY_PRICE) {
-                shopConfig.setInt("prices.buy." + editPriceMap.get(player).getB(), price);
+                shopConfig.setInt("prices.buy." + tuple.getB(), price);
                 player.sendMessage(message.getMessage("messages.shop.editBuyPrice").replace("{price}", df.format(price)));
             }
 
             if (shopType == ShopType.EDIT_SELL_PRICE) {
-                shopConfig.setInt("prices.sell." + editPriceMap.get(player).getB(), price);
+                shopConfig.setInt("prices.sell." + tuple.getB(), price);
                 player.sendMessage(message.getMessage("messages.shop.editSellPrice").replace("{price}", df.format(price)));
             }
 
-            ShopEdit.openInventory(player, editPriceMap.get(player).getA());
+            ShopEdit.openInventory(player, tuple.getA());
             editPriceMap.remove(player);
         }
     }
