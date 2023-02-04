@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'net.starly.boilerplate'
-version '1.0_Alpha'
+version '1.0.1_Alpha'
 
 repositories {
     mavenCentral()
