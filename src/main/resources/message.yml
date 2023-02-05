@@ -40,7 +40,7 @@ messages:
     editBuyPrice: "&a구매 가격을 {price} (으)로 설정했습니다."
 
     # 판매 가격 설정을 시작할때 출력되는 메세지
-    startEditSellPrice: "&a판매 가격 설정을 시작합니다. 채팅에 설정할 금액을 입력해주세요. ( -1 = 구매불가 )"
+    startEditSellPrice: "&a판매 가격 설정을 시작합니다. 채팅에 설정할 금액을 입력해주세요. ( -1 = 판매불가 )"
 
     # 판매 가격 설정 시 출력되는 메세지
     editSellPrice: "&a판매 가격을 {price} (으)로 설정했습니다."
