@@ -28,7 +28,6 @@ public class ShopEdit {
         ConfigurationSection section = shopConfig.getConfigurationSection(shopName + ".items");
         for (String key : section.getKeys(false)) {
             ItemStack item = shopConfig.getItemStack(shopName + ".items." + key);
-            PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
             ItemMeta itemMeta = item.getItemMeta();
             List<String> lore = config.getMessages("lore.edit");
             lore = lore.stream()

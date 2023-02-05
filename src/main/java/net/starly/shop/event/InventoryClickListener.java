@@ -43,7 +43,11 @@ public class InventoryClickListener implements Listener {
 
             if (event.getClick() == ClickType.SHIFT_LEFT) { // Item Remove
                 if (event.getCurrentItem() == null) return;
-                event.setCurrentItem(shopConfig.getItemStack(name + ".items." + slot));
+                ItemStack item = event.getCurrentItem();
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(null);
+                item.setItemMeta(meta);
+                event.setCurrentItem(item);
                 saveItem(name, event.getClickedInventory(), null, event.getSlot());
                 return;
             } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
@@ -75,13 +79,12 @@ public class InventoryClickListener implements Listener {
                         List<String> lore = config.getMessages("lore.edit");
                         lore = lore.stream().map(s -> {
                             if (s.contains("{buy_price}") || s.contains("{sell_price}")) {
-                                return s.replace("{buy_price}", shopConfig.getInt("prices.buy." + slot) == -1 ? "구매불가" : df.format(shopConfig.getInt("prices.buy." + slot))).replace("{sell_price}", shopConfig.getInt("prices.sell." + slot) == -1 ? "판매불가" : df.format(shopConfig.getInt("prices.sell." + slot)));
+                                return s.replace("{buy_price}", "구매불가").replace("{sell_price}", "판매불가");
                             }
                             return s;
                         }).collect(Collectors.toList());
                         ItemStack item = shopConfig.getItemStack(name + ".items." + slot);
                         ItemMeta itemMeta = item.getItemMeta();
-                        System.out.println(itemMeta.toString());
                         itemMeta.setLore(lore);
                         item.setItemMeta(itemMeta);
                         event.setCurrentItem(item);

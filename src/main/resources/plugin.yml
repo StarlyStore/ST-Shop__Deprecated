@@ -9,10 +9,9 @@ softdepend:
   - ST-Core
   - Vault
 
-version: 1.0.1_Alpha
-api-version: 1.13
+version: 1.0.2_Alpha
+api-version: 1.14
 
 commands:
-  상점:
-    description: 상점 명령어
-    aliases: [ shop, 상점 ]
+  shop:
+    aliases: [ 상점 ]
