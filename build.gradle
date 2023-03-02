@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'net.starly.boilerplate'
-version '1.0_Alpha'
+version '1.0.1_Alpha'
 
 repositories {
     mavenCentral()
@@ -20,10 +20,10 @@ dependencies {
     compileOnly "org.jetbrains:annotations:23.0.0"
 
     //BUKKIT DEPENDENCIES
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
+    compileOnly "org.spigotmc:spigot-api:R0.1:1.19.3"
 
     // OTHER DEPENDENCIES
-    compileOnly "net.starly.core:ST-Core:1.5.6"
+    compileOnly "net.starly.core:ST-Core:1.5.7"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
 }
 
